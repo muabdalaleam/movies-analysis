@@ -12,8 +12,8 @@ import os
 
 load_dotenv()
 
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '../credentials.json'
 TMBD_API_KEY  : str  = os.getenv('TMBD_API_KEY')
-COLORS        : list = ['#080708', '#3772FF', '#DF2935', '#FDCA40', '#E6E8E6']
 MAX_PAGE      : int  = 2
 
 HEADERS       : dict = {'accept': 'application/json',
@@ -91,6 +91,15 @@ movies_data  =  pd.DataFrame({'movie_id' : movie_ids,
 
 
 # ==============Saving the data & uploading it=====================
+dataset_id       :str = 'movies-analysis-db'
+project_id       :str = 'data-jobs-analysis-db'
+
+table_id   = f'{project_id}.{dataset_id}.{table_name}'
+
+job_config = bigquery.LoadJobConfig(write_disposition= 'WRITE_TRUNCATE')
+job        = client.load_table_from_dataframe(df, table_id, job_config=job_config)
+
+job.result()
 # =================================================================
 
 print(movies_data.head())
