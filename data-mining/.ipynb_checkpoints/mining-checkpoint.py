@@ -22,6 +22,20 @@ HEADERS       : dict = {'accept': 'application/json',
 
 
 # ===============Collecting the data and formatting it=============
+movie_ids            : list = []
+movies_titles        : list = []
+overviews            : list = []
+popularities         : list = []
+ratings              : list = []
+taglines             : list = []
+runtimes             : list = []
+revenues             : list = []
+release_dates        : list = []
+vote_counts          : list = []
+budgets              : list = []
+genres               : list = []
+production_companies : list = []
+    
 movies_ids = []
 
 for i in count(0):
@@ -43,20 +57,6 @@ for movie_id in movies_ids:
 
     movie_details_url      = f"https://api.themoviedb.org/3/movie/{movie_id}?language=en-US"
     movie_details_response = requests.get(movie_details_url, headers= HEADERS).json()
-
-    movie_ids            : list = []
-    movies_titles        : list = []
-    overviews            : list = []
-    popularities         : list = []
-    ratings              : list = []
-    taglines             : list = []
-    runtimes             : list = []
-    revenues             : list = []
-    release_dates        : list = []
-    vote_counts          : list = []
-    budgets              : list = []
-    genres               : list = []
-    production_companies : list = []
     
     movie_ids     .append(movie_details_response['id'])
     movies_titles .append(movie_details_response['original_title'])
@@ -73,6 +73,7 @@ for movie_id in movies_ids:
     genres                .append([d['name'] for d in movie_details_response['genres']])
     production_companies  .append([d['name'] for d in movie_details_response['production_companies']])
 
+
 movies_data  =  pd.DataFrame({'movie_id' : movie_ids,
                 'movie_title'            : movies_titles,
                 'overview'               : overviews,
@@ -86,9 +87,10 @@ movies_data  =  pd.DataFrame({'movie_id' : movie_ids,
                 'budget'                 : budgets,
                 'genres'                 : genres,
                 'production_companies'   : production_companies})
-
 # =================================================================
 
 
-print(movies_data.head())
+# ==============Saving the data & uploading it=====================
+# =================================================================
 
+print(movies_data.head())
