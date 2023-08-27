@@ -1,6 +1,6 @@
 # ==============Importing Packeges & setting constants=============
 
-# from google.cloud import bigquery
+from google.cloud import bigquery
 from itertools import count
 from dotenv import load_dotenv
 
@@ -91,13 +91,16 @@ movies_data  =  pd.DataFrame({'movie_id' : movie_ids,
 
 
 # ==============Saving the data & uploading it=====================
-dataset_id       :str = 'movies-analysis-db'
-project_id       :str = 'data-jobs-analysis-db'
+movies_data.to_csv('raw-data/movies_data.csv')
 
-table_id   = f'{project_id}.{dataset_id}.{table_name}'
+project_id      : str = 'movies-analysis-db'
+dataset_id      : str = 'movies_analysis_db_'
+table_id        : str = f'{project_id}.{dataset_id}.movies_data'
+
+client     = bigquery.Client(project= project_id)
 
 job_config = bigquery.LoadJobConfig(write_disposition= 'WRITE_TRUNCATE')
-job        = client.load_table_from_dataframe(df, table_id, job_config=job_config)
+job        = client.load_table_from_dataframe(movies_data, table_id, job_config=job_config)
 
 job.result()
 # =================================================================
