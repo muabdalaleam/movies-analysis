@@ -8,6 +8,7 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 import requests
+import sqlite3
 import os
 
 load_dotenv()
@@ -85,24 +86,18 @@ movies_data  =  pd.DataFrame({'movie_id' : movie_ids,
                 'release_data'           : release_dates,
                 'vote_count'             : vote_counts,
                 'budget'                 : budgets,
-                'genres'                 : genres,
-                'production_companies'   : production_companies})
+                'genres'                 : str(genres),
+                'production_companies'   : str(production_companies)})
 # =================================================================
 
 
-# ==============Saving the data & uploading it=====================
+# ======================Saving the data============================
 movies_data.to_csv('raw-data/movies_data.csv')
 
-project_id      : str = 'movies-analysis-db'
-dataset_id      : str = 'movies_analysis_db_'
-table_id        : str = f'{project_id}.{dataset_id}.movies_data'
+conn = sqlite3.connect('database.db')
 
-client     = bigquery.Client(project= project_id)
+movies_data.to_sql('movies-data', conn, index=False, if_exists= 'replace')
 
-job_config = bigquery.LoadJobConfig(write_disposition= 'WRITE_TRUNCATE')
-job        = client.load_table_from_dataframe(movies_data, table_id, job_config=job_config)
-
-job.result()
+conn.commit()
+conn.close()
 # =================================================================
-
-print(movies_data.head())
