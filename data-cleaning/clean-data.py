@@ -4,28 +4,28 @@ import numpy as np
 import sqlite3
 import ast
 
-conn = sqlite3.connect("../database.db")
-df = pd.read_sql_query("SELECT * from `movies_data`", conn)
-
-conn.close()
+df = pd.read_csv('../data-mining/raw-data/movies_data.csv')
 # ==================================================================
 
 
 # =======================Cleaning the data==========================
+df = df.drop_duplicates(subset='movie_title', keep='first').reset_index(drop=True)
 df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+df = df[df['runtime'] > 10].reset_index(drop= True)
 
-df[['overview', 'tagline']] .fillna('')
-df[['revenue', 'budget']]   .replace(0, np.nan)
+
+df[['overview', 'tagline']] = df[['overview', 'tagline']] .fillna('')
 
 df = df.astype({'revenue'    : np.uint32,  'budget' : np.uint32,
-                'popularity' : np.float16, 'rating' : np.float16,
-                'runtime'    : np.uint16,  'vote_count': np.uint32})
+                'popularity' : np.uint16,  'rating' : np.float32,
+                'runtime'    : np.uint16,  'vote_count': np.uint32,
+                'movie_id'   : np.uint32})
 
 df['genres']               = df['genres'].apply(ast.literal_eval)
 df['production_companies'] = df['production_companies'].apply(ast.literal_eval)
 
 
-df['release_date'] = pd.to_datetime(df['release_date'], format='%Y-%m-%d', errors='coerce')
+df['release_date']         = pd.to_datetime(df['release_date'], format='%Y-%m-%d', errors='coerce')
 # ==================================================================
 
 
@@ -37,28 +37,27 @@ def tucky_method(array: np.array, indecies= True) -> np.array:
     Q3 = np.quantile(array, 0.75)
     Q1 = np.quantile(array, 0.25)
     IQR = Q3 - Q1
-    
+
     upper_range = Q3 + (IQR * 1.5)
     lower_range = Q1 - (IQR * 1.5)
-    
-    outliers_indexes = [x for x in array if ((x < lower_range) | (x > upper_range))]
-    print(f"Found {len(outliers_indexes)} outliers from {len(outliers_indexes)} length series!")
-    
+
+    outliers         = [x for x in array if ((x < lower_range) | (x > upper_range))]
+    outliers_indexes = np.array(*np.where(np.isin(array, outliers)))
+
     return outliers_indexes
 
-outliers_indexes     = tucky_method(df_without_outliers['revenue'].to_numpy())
-outliers             = np.array(*np.where(np.isin(df_without_outliers['revenue'], outliers_indexes)))
+df_without_outliers  = df_without_outliers.drop(tucky_method(df_without_outliers['revenue']))
 
-df_without_outliers  = df_without_outliers.drop(outliers)
+# df[['revenue', 'budget']] = df[['revenue', 'budget']]   .replace(0, np.nan())
 # ==================================================================
 
 
 # ======================Saving the cleaned data=====================
-df.to_pickle('cleaned-data/movies-data.pkl')
-df.to_csv('cleaned-data/movies-data.csv')
+df.to_parquet('cleaned-data/movies-data.parquet')
+df.to_csv('cleaned-data/movies-data.csv', index=False)
 
-df_without_outliers.to_pickle('cleaned-data/movies-data-without-outliers.pkl')
-df_without_outliers.to_csv('cleaned-data/movies-data-without-outliers.csv')
+df_without_outliers.to_parquet('cleaned-data/movies-data-without-outliers.parquet')
+df_without_outliers.to_csv('cleaned-data/movies-data-without-outliers.csv', index=False)
 
 
 df = df                                   .astype({'genres': str, 'production_companies': str})

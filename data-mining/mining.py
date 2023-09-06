@@ -5,8 +5,9 @@ from itertools import count
 from dotenv import load_dotenv
 
 import seaborn as sns
-import pandas as pd
+import polars as pl
 import numpy as np
+import pandas as pd
 import requests
 import sqlite3
 import os
@@ -15,7 +16,7 @@ load_dotenv()
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '../credentials.json'
 TMBD_API_KEY  : str  = os.getenv('TMBD_API_KEY')
-MAX_PAGE      : int  = 2
+MAX_PAGE      : int  = 500
 
 HEADERS       : dict = {'accept': 'application/json',
                         'Authorization': f'Bearer {TMBD_API_KEY}'}
@@ -23,81 +24,50 @@ HEADERS       : dict = {'accept': 'application/json',
 
 
 # ===============Collecting the data and formatting it=============
-movie_ids            : list = []
-movies_titles        : list = []
-overviews            : list = []
-popularities         : list = []
-ratings              : list = []
-taglines             : list = []
-runtimes             : list = []
-revenues             : list = []
-release_dates        : list = []
-vote_counts          : list = []
-budgets              : list = []
-genres               : list = []
-production_companies : list = []
-    
-movies_ids = []
 
-for i in count(0):
+movies_data = []
 
-    page : int = i + 1
-    if page > MAX_PAGE:
-        break
+for page in range(1, MAX_PAGE + 1):
+    discover_movies_url = (
+        f'https://api.themoviedb.org/3/discover/movie?include_adult=false'
+        f'&include_video=false&language=en-US&page={page}&sort_by=popularity.desc'
+    )
 
-    discover_movies_url = f'https://api.themoviedb.org/3/discover/movie?include_adult=false' + \
-                        '&include_video=false&language=en-US&page={page}&sort_by=popularity.desc'
-    
-    discover_movies_response = requests.get(discover_movies_url, headers= HEADERS).json()
+    discover_movies_response = requests.get(discover_movies_url, headers=HEADERS).json()
 
     for movie in discover_movies_response['results']:
-        movies_ids.append(movie['id'])
+        
+        movie_id               : str  = movie['id']
+        movie_details_url      : str  = f"https://api.themoviedb.org/3/movie/{movie_id}?language=en-US"
+        movie_details_response : dict = requests.get(movie_details_url, headers=HEADERS).json()
 
+        movie_data = {
+            'movie_id'             : movie_details_response['id'],
+            'movie_title'          : movie_details_response['original_title'],
+            'overview'             : movie_details_response['overview'],
+            'popularity'           : movie_details_response['popularity'],
+            'rating'               : movie_details_response['vote_average'],
+            'tagline'              : movie_details_response['tagline'],
+            'runtime'              : movie_details_response['runtime'],
+            'revenue'              : movie_details_response['revenue'],
+            'release_date'         : movie_details_response['release_date'],
+            'vote_count'           : movie_details_response['vote_count'],
+            'budget'               : movie_details_response['budget'],
+            'genres'               : str([d['name'] for d in movie_details_response['genres']]),
+            'production_companies' : str([d['name'] for d in movie_details_response['production_companies']])
+        }
 
-for movie_id in movies_ids:
+        movies_data.append(movie_data)
 
-    movie_details_url      = f"https://api.themoviedb.org/3/movie/{movie_id}?language=en-US"
-    movie_details_response = requests.get(movie_details_url, headers= HEADERS).json()
-    
-    movie_ids     .append(movie_details_response['id'])
-    movies_titles .append(movie_details_response['original_title'])
-    overviews     .append(movie_details_response['overview'])
-    popularities  .append(movie_details_response['popularity'])
-    ratings       .append(movie_details_response['vote_average'])
-    taglines      .append(movie_details_response['tagline'])
-    runtimes      .append(movie_details_response['runtime'])
-    revenues      .append(movie_details_response['revenue'])
-    release_dates .append(movie_details_response['release_date'])
-    vote_counts   .append(movie_details_response['vote_count'])
-    budgets       .append(movie_details_response['budget'])
-    
-    genres                .append([d['name'] for d in movie_details_response['genres']])
-    production_companies  .append([d['name'] for d in movie_details_response['production_companies']])
-
-
-movies_data  =  pd.DataFrame({'movie_id' : movie_ids,
-                'movie_title'            : movies_titles,
-                'overview'               : overviews,
-                'popularity'             : popularities ,
-                'rating'                 : ratings,
-                'tagline'                : taglines,
-                'runtime'                : runtimes,
-                'revenue'                : revenues,
-                'release_data'           : release_dates,
-                'vote_count'             : vote_counts,
-                'budget'                 : budgets,
-                'genres'                 : str(genres),
-                'production_companies'   : str(production_companies)})
+movies_data = pl.DataFrame(movies_data)
 # =================================================================
 
 
 # ======================Saving the data============================
-movies_data.to_csv('raw-data/movies_data.csv')
+movies_data.write_csv('raw-data/movies_data.csv')
 
-conn = sqlite3.connect('database.db')
+conn = sqlite3.connect('../database.db')
+movies_data.to_pandas().to_sql('movies_data', conn, if_exists='replace', index=False)
 
-movies_data.to_sql('movies-data', conn, index=False, if_exists= 'replace')
-
-conn.commit()
 conn.close()
 # =================================================================
