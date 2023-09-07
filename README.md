@@ -1,24 +1,17 @@
-# Movies-analysis project :movie_camera::vhs:
-## Describtion :scroll::<br>
-In this project we will try to analyse the the movie making market and see the trends at it within the years.<br>
-This project will awnser the questions we put in the notebook using the **[TMDB](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata)** data set.<br>
-The project isn't meant to be a showcase it was mainly for train my self on EDA in a very short time 4 days.<br>
-so din't exepect very Wow thing and ML or prediction.<br><br>
+# Movies Analysis
+Hey 😉 This is analysis is aimed to make me and other movies lovers know more about the thing they really enjoy the movies here I asked many questions and looked in this big data with sharp eyes to get useful insights and conclusions so I:
 
-## Project scope :mag_right::
-We will use the TMbd prebuilt data set becuase our time limitation so we can't use the main TMbd API and we<br>
-will try to get the more conclusions as we can and as I said <ins>This wasn't meant to be a masterpiece</ins>.<br><br>
+- Collected new and old movies data ⛏️
+- Cleaned it for better analysis 🧹
+- Created interactive dashboard & a static web report. 📈
 
-## Scources :office::
-- StackOver Flow
-- Seaborn doumentation
-- Pandas doumentation
-- TowardsDataScience
-- Geeks for Geeks
-<br><br>
+## To see Anything in this project please refer to the links table below:
+|                               Project Corner |                                         Link |
+| --- | --- |
+| Notion documentation     | [Documentation](https://attractive-collar-001.notion.site/Movies-Analysis-Documentation-07beb5442a634afa83c8d558de9b6547?pvs=4)|
+| Tableau Dashboard        | [My Dashboard](https://public.tableau.com/app/profile/muhammed.ahmed.abd.el.aleam.elsayegh/viz/MoviesAnalysis_16932561851250/Dashboard1) |
+| Web report               | [My Report](https://youtube-gaming-analysis-dashboard.onrender.com) |
+| My database on Kaggle    | [My Dataset](https://www.kaggle.com/datasets/muhammedelsayegh/youtube-gaming-videos-and-channels-data) |
+| Jupyter notebook viewer  | [My Analysis Notebook](https://nbviewer.org/github/muhammed-abdelaleam/Youtube-gaming-analysis/tree/master/)|
 
-## Thanks for :pray::
-- DataLore
-- Udacity
-- LinkedIn learning
-- **You!!!**
+**The excel dashboard is still under development.*
