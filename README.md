@@ -10,7 +10,7 @@ Hey 😉 This is analysis is aimed to make me and other movies lovers know more 
 | --- | --- |
 | Notion documentation     | [Documentation](https://attractive-collar-001.notion.site/Movies-Analysis-Documentation-07beb5442a634afa83c8d558de9b6547?pvs=4)|
 | Tableau Dashboard        | [My Dashboard](https://public.tableau.com/app/profile/muhammed.ahmed.abd.el.aleam.elsayegh/viz/MoviesAnalysis_16932561851250/Dashboard1) |
-| Web report               | [My Report](https://youtube-gaming-analysis-dashboard.onrender.com) |
+| Web report               | [My Report](https://movies-analysis-report.onrender.com) |
 | My database on Kaggle    | [My Dataset](https://www.kaggle.com/datasets/muhammedelsayegh/movies-analysis-dataset?select=movies-data.csv) |
 | Jupyter notebook viewer  | [My Analysis Notebook](https://nbviewer.org/github/muhammed-abdelaleam/Youtube-gaming-analysis/tree/master/)|
 
