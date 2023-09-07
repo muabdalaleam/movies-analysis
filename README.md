@@ -1,4 +1,4 @@
-# Movies Analysis
+# Movies Analysis 🎥
 Hey 😉 This is analysis is aimed to make me and other movies lovers know more about the thing they really enjoy the movies here I asked many questions and looked in this big data with sharp eyes to get useful insights and conclusions so I:
 
 - Collected new and old movies data ⛏️
