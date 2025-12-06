@@ -1,2 +1,11 @@
 .env
-credentials.json
+
+**/.ipynb_checkpoints/
+/.ipynb_checkpoints/
+/data/
+/venv/
+
+**.parquet
+**.svg
+**.db
+**.zip
