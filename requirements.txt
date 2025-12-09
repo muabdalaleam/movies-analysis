@@ -2,10 +2,4 @@ requests
 pandas
 numpy
 matplotlib
-wordcloud
 seaborn
-polars
-pandasql
-pyarrow
-pillow
-opencv-python

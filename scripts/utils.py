@@ -49,7 +49,7 @@ def retrying_request(url, headers, timeout, max_retries, retry_wait=0,
             retries += 1
             time.sleep(retry_wait)
 
-            print(f"Failed requesting {url} after {retries-1} retires.")
+            print(f"Failed requesting {url} after {retries} retires.")
             if retries >= max_retries:
                 if    raise_on_fail: raise e
                 else: return None
