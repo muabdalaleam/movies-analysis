@@ -1,6 +1,6 @@
 import json
 import csv
-from typing import List
+from typing import List, Dict
 
 # a dict describing a column name & where to be found within the TMDB json resposnse
 MOVIE_DECODER = {
@@ -63,14 +63,11 @@ if __name__ == "__main__":
     with open("./data/movies_raw.json", "r") as f:
         movies = json.load(f)
 
-    print(decode_movie(movies[67]))
+    with open("./data/movies_clean.csv", "w") as f:
+        writer = csv.DictWriter(f, fieldnames=MOVIE_DECODER.keys())
+        writer.writeheader()
 
-    # with open("./data/movies_clean.csv", "w") as f:
-    #     writer = csv.DictWriter(f, fieldnames=movie_template.keys())
-    #     writer.writeheader()
-
-    #     for movie in movies:
-    #         clean_movie = movie_template
-
-    #         writer.writerow(movie_template)
+        for movie in movies:
+            if isinstance(movie, Dict):
+                writer.writerow(decode_movie(movie))
 

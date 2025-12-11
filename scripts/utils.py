@@ -53,6 +53,5 @@ def retrying_request(url, headers, timeout, max_retries, retry_wait=0,
             if retries >= max_retries:
                 if    raise_on_fail: raise e
                 else: return None
-                
 
     return response
