@@ -1,73 +1,45 @@
-import json
-import csv
-from typing import List, Dict
+# Our formatted movies csv has three small problems that needs to be cleaned 
+# before starting the analysis & here are they:
+# 
+# - List values have brackets in the start and end of them.
+# - Revenues and budgets can get assigned 0 instead of N/A.
+# - Revenue & budget values from TMDB have human insertion errors resulting in
+#   outliers.
 
-# a dict describing a column name & where to be found within the TMDB json resposnse
-MOVIE_DECODER = {
-    "id":           "",
-    "imdb_id":      "",
-    "release_date": "",
+import pandas as pd
+import numpy as np
 
-    "title":      "original_title",
-    "collection": "belongs_to_collection,name",
-    "overview":   "",
-    "tagline":    "",
-    "language":   "original_language",
+def remove_brackets(str_list: str) -> str:
+    if str_list and isinstance(str_list, str):
+        return str_list.replace("\'", "")[1:-1]
 
-    "runtime":  "",
-    "revenue": "",
-    "budget":  "",
+    return str_list
 
-    "vote_avg":   "vote_average",
-    "vote_count": "vote_count",
+def get_z_score(x: float, mean: float, stdev: float) -> float:
+    return (x - mean) / stdev
 
-    "genres": "genres,name",
-    "production_countries": "production_countries,name",
-    "production_companies": "production_companies,name",
-}
-
-def decode_movie(raw_movie: dict) -> dict:
-    clean_movie = dict()
-
-    for col, val_path in MOVIE_DECODER.items():
-        if val_path == "":
-            try:    clean_movie[col] = raw_movie[col]
-            except: clean_movie[col] = None
-
-        elif "," not in val_path:
-            try:    clean_movie[col] = raw_movie[val_path]
-            except: clean_movie[col] = None
-
-        # Probably this is the dirtiest code I've ever written
-        elif "," in val_path:
-            val_path_parts = val_path.split(",")
-            if len(val_path_parts) > 2:
-                raise Exception("decode_movie cann't decode a TMDB movie value with depth more than 2")
-
-            if isinstance(raw_movie[val_path_parts[0]], List):
-                clean_movie[col] = []
-
-                for thing in raw_movie[val_path_parts[0]]:
-                    if isinstance(thing[val_path_parts[1]], List):
-                        clean_movie[col].extend(thing[val_path_parts[1]])
-                    else:
-                        clean_movie[col].append(thing[val_path_parts[1]])
-                continue
-
-            try:    clean_movie[col] = raw_movie[val_path_parts[0]][val_path_parts[1]]
-            except: clean_movie[col] = None
-
-    return clean_movie
 
 if __name__ == "__main__":
-    with open("./data/movies_raw.json", "r") as f:
-        movies = json.load(f)
+    df = pd.read_csv("./data/movies.csv")
 
-    with open("./data/movies_clean.csv", "w") as f:
-        writer = csv.DictWriter(f, fieldnames=MOVIE_DECODER.keys())
-        writer.writeheader()
+    # Removing the brackets
+    df["genres"]               = df["genres"].apply(remove_brackets)
+    df["production_countries"] = df["production_countries"].apply(remove_brackets)
+    df["production_companies"] = df["production_companies"].apply(remove_brackets)
 
-        for movie in movies:
-            if isinstance(movie, Dict):
-                writer.writerow(decode_movie(movie))
+    # Converting zeros in reveneue & budget to None
+    df["revenue"] = df["revenue"].apply(lambda x: None if x == 0 else x)
+    df["budget"]  = df["budget"].apply(lambda x:  None if x == 0 else x)
 
+    # Adding z-score columns to track outliers
+    revenue_mean   = np.nanmean(df["revenue"])
+    revenue_std = np.nanstd(df["revenue"])
+
+    budget_mean   = np.nanmean(df["budget"])
+    budget_std = np.nanstd(df["budget"])
+
+    df["revenue_z_score"] = df["revenue"].apply(lambda x: get_z_score(x, revenue_mean, revenue_std))
+    df["budget_z_score"]  = df["budget"].apply(lambda x: get_z_score(x, budget_mean, budget_std))
+
+    # Saving the cleaned data
+    df.to_csv("./data/movies_clean.csv")
