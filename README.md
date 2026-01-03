@@ -2,17 +2,34 @@
 
 ![Line chart change in rating overtime for different movie genres on average (fun-looking chart)](https://github.com/muabdalaleam/movies-analysis/blob/main/assets/screenshot.png?raw=true)
 
-- Collected new and old movies data
-- Cleaned it for better analysis
-- Created interactive dashboard & a static web report.
+Analysis to the film-making industry using the top-voted movies on TMDB, and sheer curiousity to find out
+things like: Most & least profitable genres, Change of average rating throw a movie sequel & more.
 
-## To see Anything in this project please refer to the links table below:
-|                               Project Corner |                                         Link |
-| --- | --- |
-| Notion documentation     | [Documentation](https://attractive-collar-001.notion.site/Movies-Analysis-Documentation-07beb5442a634afa83c8d558de9b6547?pvs=4)|
-| Tableau Dashboard        | [My Dashboard](https://public.tableau.com/app/profile/muhammed.ahmed.abd.el.aleam.elsayegh/viz/MoviesAnalysis_16932561851250/Dashboard1) |
-| Web report               | [My Report](https://movies-analysis-report.onrender.com) |
-| My database on Kaggle    | [My Dataset](https://www.kaggle.com/datasets/muhammedelsayegh/movies-analysis-dataset?select=movies-data.csv) |
-| Jupyter notebook viewer  | [My Analysis Notebook](https://nbviewer.org/github/muhammed-abdelaleam/Youtube-gaming-analysis/tree/master/)|
+---
 
-**The excel dashboard is still under development.*
+# Quick links
+- [Analysis notebook]()
+- [Tableau dashboard]() *
+- [Kaggle dataset]() **
+- [Analysis PDF report]()
+
+*: The tabluau dashboard is made long ago on smaller & older data<br>
+** : the kaggle dataset is mine for more look here
+
+# Reproducing
+If you just want to explore the project the [quick links] would cut it, but if you want to replicate what
+I did in the project continue reading this section.
+
+## Setup
+The mining & analysis was done using Python 3.12.11 So i would recommend using a [`venv`](https://docs.python.org/3/library/venv.html)
+with the same Python version though it's **probably** Ok to use other modern versions.
+
+Firstly clone the repo `git clone https://github.com/muabdalaleam/movies-analysis.git` and move into it `cd movies-analysis`
+then create a new `venv` by running `python3 -m venv venv` then activate it *(depends or your OS)* after you activated the `venv`
+install the dependicies using `pip -r install requirements.txt` and that's it.
+
+## Dataset
+After you have done the setup, you can now run the TMDB data miner but first you should have a [TMDB API key](https://developer.themoviedb.org/docs/getting-started)
+and create an enviroment file in the root of the project `touch ./.env` then write the following in it:
+```TMBD_API_KEY="<YOUR_TMDB_API_KEY>"```
+now create the directory where the movies data will be stored 
