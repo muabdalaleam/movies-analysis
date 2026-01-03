@@ -1,6 +1,6 @@
 # Movies industry analysis
 
-![Line chart change in rating overtime for different movie genres on average (fun-looking chart)](https://github.com/muabdalaleam/movies-analysis/blob/main/assets/screenshot.jpg?raw=true)
+![Line chart change in rating overtime for different movie genres on average (fun-looking chart)](https://github.com/muabdalaleam/movies-analysis/blob/main/assets/screenshot.png?raw=true)
 
 - Collected new and old movies data
 - Cleaned it for better analysis
