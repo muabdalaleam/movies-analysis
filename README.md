@@ -1,9 +1,10 @@
-# Movies Analysis 🎥
-Hey 😉 This is analysis is aimed to make me and other movies lovers know more about the thing they really enjoy the movies here I asked many questions and looked in this big data with sharp eyes to get useful insights and conclusions so I:
+# Movies industry analysis
 
-- Collected new and old movies data ⛏️
-- Cleaned it for better analysis 🧹
-- Created interactive dashboard & a static web report. 📈
+![Line chart change in rating overtime for different movie genres on average (fun-looking chart)](https://github.com/muabdalaleam/movies-analysis/blob/main/assets/screenshot.jpg?raw=true)
+
+- Collected new and old movies data
+- Cleaned it for better analysis
+- Created interactive dashboard & a static web report.
 
 ## To see Anything in this project please refer to the links table below:
 |                               Project Corner |                                         Link |
