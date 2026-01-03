@@ -42,4 +42,4 @@ if __name__ == "__main__":
     df["budget_z_score"]  = df["budget"].apply(lambda x: get_z_score(x, budget_mean, budget_std))
 
     # Saving the cleaned data
-    df.to_csv("./data/movies_clean.csv")
+    df.to_csv("./data/movies_clean.csv", index=False)
