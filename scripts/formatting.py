@@ -63,7 +63,7 @@ if __name__ == "__main__":
     with open("./data/movies_raw.json", "r") as f:
         movies = json.load(f)
 
-    with open("./data/movies_clean.csv", "w") as f:
+    with open("./data/movies.csv", "w") as f:
         writer = csv.DictWriter(f, fieldnames=MOVIE_DECODER.keys())
         writer.writeheader()
 
