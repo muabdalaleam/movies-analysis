@@ -9,10 +9,10 @@ find out things like: Most & least profitable genres, Change of average rating t
 ---
 
 # Quick links
-- [Analysis notebook]()
-- [Tableau dashboard]() *
-- [Kaggle dataset]() **
-- [Analysis PDF report]()
+- [Analysis notebook](https://nbviewer.org/github/muabdalaleam/movies-analysis/blob/main/notebooks/report.ipynb)
+- [Tableau dashboard](https://public.tableau.com/views/MoviesAnalysis_16932561851250/Dashboard1?:language=en-US) *
+- [Kaggle dataset](https://www.kaggle.com/datasets/muhammedelsayegh/movies-analysis-dataset) **
+- [Analysis PDF report](https://github.com/muabdalaleam/movies-analysis/blob/main/reports/report.pdf)
 
 *: The tabluau dashboard is made long ago on smaller & older data<br>
 ** : the kaggle dataset is mine for more look here
@@ -34,7 +34,7 @@ activate it *(depends or your OS)* after you activated the `venv` install the de
 `pip -r install requirements.txt` and that's it.
 
 ## Dataset
-You can either download my movies dataset from [Kaggle]() or mine it yourself again *(might take a
+You can either download my movies dataset from [Kaggle](https://www.kaggle.com/datasets/muhammedelsayegh/movies-analysis-dataset) or mine it yourself again *(might take a
 long time)* by following the steps below.<br>
 
 After you have done the setup, you can now run the TMDB data miner but first you should have a
@@ -58,7 +58,8 @@ Feel free to modify or rerun the report notebook `./notebooks/report.ipynb` just
 `./data/movies_clean.csv` and a working `venv`.
 
 # Analysis summary
-Here is a summary of the cool findings in this project for more look at the [Report notebook]().
+Here is a summary of the cool findings in this project for more look at the 
+[Report notebook](https://nbviewer.org/github/muabdalaleam/movies-analysis/blob/main/notebooks/report.ipynb).
 
 - Profitable genres:<br>
 History, Science Fiction & Western movies can be really expensive to produce<br>
@@ -77,4 +78,4 @@ continued till around 2015 where it was starting to get better again.
 Film sequels tend to diverge to worse & most of them diverged after 4 sequels<br>
 to rating of about **~6.5**
 
-## Thanks for looking into my project 💖
+### Thanks for looking into my project 💖
